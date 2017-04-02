@@ -36,7 +36,8 @@
             <div class="row">
                 @foreach($portfolio as $p)
                 <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                  
+                    <a href="#{{$p->id}}" class="portfolio-link" data-toggle="modal">
                         <div class="portfolio-hover">
                             <div class="portfolio-hover-content">
                                 <i class="fa fa-plus fa-3x"></i>
@@ -53,42 +54,6 @@
             </div>
         </div>
     </section>
-@foreach($portfolio as $p)
-<!-- Portfolio Modal 1 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <!-- Project Details Go Here -->
-                                <h2>{{$p->heading}}</h2>
-                                <p class="item-intro text-muted">{{$p->sub_title}}</p>
-                                <img class="img-responsive img-centered" src="{{url('public/images/portfolio/'.$p->toggle_image)}}" alt="">
-                                <p>{{$p->body}}</p>
-                                <p>
-                                    <strong>{{$p->question}}</strong></p>
-                                <ul class="list-inline">
-                                    <li>Date: {{date('M j, Y ',strtotime($p->created_at))}}</li>
-                                    <li>Client: {{$p->client}}</li>
-                                    <li>Category: Graphic Design</li>
-                                </ul>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endforeach
 
 <!-- About Section -->
     <section id="about">
@@ -102,62 +67,25 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="timeline">
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/1.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>2009-2011</h4>
-                                    <h4 class="subheading">Our Humble Beginnings</h4>
+                        
+                             @php $counter = 1; @endphp
+                            @foreach($about as $a)
+                            <li class=" @if($counter % 2 == 0) timeline-inverted @endif">
+                                <div class="timeline-image">
+                                    <img class="img-circle img-responsive" src="{{url('public/images/about/'.$a->about_image)}}" alt="">
                                 </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4>{{$a->datetitle}}</h4>
+                                        <h4 class="subheading">{{$a->title}}</h4>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p class="text-muted">{{$a->body}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/2.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>March 2011</h4>
-                                    <h4 class="subheading">An Agency is Born</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/3.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>December 2012</h4>
-                                    <h4 class="subheading">Transition to Full Service</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/4.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>July 2014</h4>
-                                    <h4 class="subheading">Phase Two Expansion</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                            @php $counter++; @endphp
+                            @endforeach
                         <li class="timeline-inverted">
                             <div class="timeline-image">
                                 <h4>Be Part
@@ -269,4 +197,43 @@
             </div>
         </div>
     </section>
+    
+    <!-- Portfolio Modal 1 -->
+    @foreach($portfolio as $p)
+    <div class="portfolio-modal modal fade" id="{{$p->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>{{$p->heading}}</h2>
+                                <p class="item-intro text-muted">{{$p->sub_title}}</p>
+                                <img class="img-responsive img-centered" 
+                                     src="{{url('public/images/portfolio/'.$p->toggle_image)}}" alt="">
+                                <p>{{$p->body}}</p>
+                                <p>
+                                    <strong>{{$p->sub_title}}</strong>{{$p->question}}</p>
+                                <ul class="list-inline">
+                                    <li>Date: {{date('M j, Y ',strtotime($p->created_at))}}</li>
+                                    <li>Client: {{$p->client}}</li>
+                                    <li>Category: {{$p->sub_title}}</li>
+                                </ul>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     @endforeach
+
 @endsection

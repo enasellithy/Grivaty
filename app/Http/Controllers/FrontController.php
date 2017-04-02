@@ -21,4 +21,5 @@ class FrontController extends Controller
     	return view('welcome',['title'=>'Giravty'],
     		compact('service','portfolio','team','brand','about'));
     }
+
 }

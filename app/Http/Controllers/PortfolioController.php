@@ -115,7 +115,9 @@ class PortfolioController extends Controller
             'sub_title'  => 'required',
             'body' => 'required',
             'question' => 'required',
-            'client' => 'required'
+            'client' => 'required',
+            'pimage' => 'required|mimes:jpeg,bmp,png,jpg',
+            'toggle_image' => 'required|mimes:jpeg,bmp,png,jpg'
             ]);
         $portfolio = Portfolio::find($id);
         $portfolio->heading = $request->heading;
@@ -123,6 +125,24 @@ class PortfolioController extends Controller
         $portfolio->body = $request->body;
         $portfolio->question = $request->question;
         $portfolio->client = $request->client;
+        if($request->hasFile('pimage')) 
+        {
+            $pimage = $request->file('pimage');
+            $filename = time() . '.' .$pimage->getClientOriginalExtension();
+            $location = public_path('images/portfolio/'.$filename);
+            Image::make($pimage)->resize(400,400)->save($location);
+            Image::make($pimage)->save($location);
+            $portfolio->pimage = $filename;
+        }
+        if($request->hasFile('toggle_image')) 
+        {
+            $toggle_image = $request->file('toggle_image');
+            $filename = time() . '.' .$toggle_image->getClientOriginalExtension();
+            $location = public_path('images/portfolio/'.$filename);
+            Image::make($toggle_image)->resize(400,400)->save($location);
+            Image::make($toggle_image)->save($location);
+            $portfolio->toggle_image = $filename;
+        }
         $portfolio->save();
         Session::flash('success','Portfolio Updated');
         return redirect()->back();

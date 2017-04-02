@@ -98,12 +98,22 @@ class AboutController extends Controller
         $this->Validate($request,[ 
             'date_title' => 'required',
             'title'  => 'required',
-            'body'  => 'required'
+            'body'  => 'required',
+            'about_image' => 'required|mimes:jpeg,bmp,png,jpg'
             ]);
         $about = About::find($id);
         $about->date_title = $request->date_title;
         $about->title = $request->title;
         $about->body = $request->body;
+        if($request->hasFile('about_image')) 
+        {
+            $about_image = $request->file('about_image');
+            $filename = time() . '.' .$about_image->getClientOriginalExtension();
+            $location = public_path('images/about/'.$filename);
+            Image::make($about_image)->resize(400,400)->save($location);
+            Image::make($about_image)->save($location);
+            $about->about_image = $filename;
+        }
         $about->save();
         Session::flash('success','About Updated');
         return redirect()->back();

@@ -104,7 +104,8 @@ class TeamController extends Controller
             'job'  => 'required',
             'flink' => 'required',
             'tlink' => 'required',
-            'inlink' => 'required'
+            'inlink' => 'required',
+            'teamimage' => 'required|mimes:png,jpeg,jpg'
             ]);
         $team = Team::find($id);
         $team->name = $request->name;
@@ -112,7 +113,15 @@ class TeamController extends Controller
         $team->flink = $request->flink;
         $team->tlink = $request->tlink;
         $team->inlink = $request->inlink;
-        //$team->teamimage = $request->teamimage;
+         if($request->hasFile('teamimage'))
+        {
+            $teamimage = $request->file('teamimage');
+            $filename = time() . '.' .$teamimage->getClientOriginalExtension();
+            $location = public_path('images/team/'.$filename);
+            Image::make($teamimage)->resize(400,400)->save($location);
+            Image::make($teamimage)->save($location);
+            $team->teamimage = $filename;
+        }
         $team->save();
         Session::flash('success','Team Update');
         return redirect()->back();

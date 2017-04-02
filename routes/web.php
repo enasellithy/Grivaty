@@ -5,15 +5,17 @@
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 Route::group(['middleware'=>['web']],function(){
 	Route::get('/','FrontController@index');
 	Route::get('contact','ContactController@form');
 	Route::post('contact/post','ContactController@formpost');
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+*/
 	Route::group(['middleware'=>'cpanel'],function(){
 		Route::resource('cpanel','AdminController');
 		Route::get('mailadmin','AdminController@mail');
